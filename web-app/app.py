@@ -12,6 +12,10 @@ app = Flask('project4')
 def RootPage():
     return render_template('root.html')
 
+@app.route('/anaylzeData', methods=['POST'])
+def anaylzeData():
+    return
+
 if __name__ == "__main__":
     PORT = os.getenv('PORT', 5000) 
     app.run(debug=True,port=PORT)

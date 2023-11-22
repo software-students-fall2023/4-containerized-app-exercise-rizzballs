@@ -8,12 +8,61 @@
 </head>
 <body>
     {% extends 'base.html' %} {% block Base %}
-        <div class="about">
+        <div class="buttonContainer">
             <h2 style="text-align:center">What is our machine Learning app?</h2>
-            <p>
-                placeholder for our machine learning app 
-            </p>
+            <button type="submit" onclick="beginRecording()"> Start Recording Audio </button>
+            <button type="submit" onclick="stopRecording()"> Stop Recording Audio </button>
         </div>
+        <div class="buttonContainer">
+            <p class="displayReuslts"> reuslts of analysis will be place here</p>
+        </div>
+
+        <script>
+            let mediaRecorder;
+            let audioChunks = [];
+            let wordCount = 0;
+
+            async function beginRecording() {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const audioContext = new AudioContext();
+                const audioInput = audioContext.createMediaStreamSource(stream);
+                mediaRecorder = new MediaREcorder(audioContext);
+
+                mediaRecorder.ondataavailable = (event) =>{
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = async () =>{
+                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+                    const formData = new FormData();
+                    formData.append('audio', audioBlob);
+
+                    const response = await fetch('/anaylzeData', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    /**
+                     * const result = await response.json();
+                     * const transcription = result.transcription;
+                     * 
+                     *
+                     * 
+                     */
+
+                }
+
+                //audioInput.connect(mediaRecorder);
+                //mediaRecorder.connect(audioContext.destination);
+                //mediaRecorder.start();
+            }
+
+            function stopRecording(){
+                mediaRecorder.stop()
+            }
+        </script>
+
     {% endblock %}
     
     
