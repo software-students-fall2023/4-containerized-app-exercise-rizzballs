@@ -1,0 +1,20 @@
+version: "3.11"
+
+services:
+  frontend:
+    build: ./web-app # build the Docker image from the Dockerfile in the front-end directory
+    ports:
+      - 3000:3000 # map port 3000 of host machine to port 3000 of container
+    depends_on:
+      - backend
+    command: python app.py # command to start up the front-end once the container is up and running
+
+
+
+  backend:
+    build: 
+    ports:
+      -
+    depends_on:
+      - db
+    command: python machine_learning_client.py
