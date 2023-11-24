@@ -1,19 +1,35 @@
-from flask import Flask, render_template, request, redirect, url_for, make_response, session
 import os
 from pymongo import MongoClient
 import pymongo
 import datetime
-from bson.objectid import ObjectId
+import speech_recognition as sr
 import sys
 
-app = Flask('project4')
+r = sr.recognizer()
 
-@app.route("/process_wav", methods=['GET', 'POST'])
-def process_wav():
-    if request.method == 'POST':
-        audio_file = request.form.get("audio-recording")
-        dir = 'audio/'+str(audio_file)
+def record_microphone():
+    with sr.Microphone() as source:
+        print("Please give your answer:")
+        audio = r.listen(source)
+    return audio
+
+def audio_to_text(audio):
+    try:
+        transcription = r.recognize_google(audio)
+        print(transcription)
+    except sr.UnknownValueError:
+        print("Sorry, we could not recognize your response.")
+    except sr.RequestError as e:
+        print("Sorry, there appears to be an error with Google Speech to Text")
+
+def grade_response(transcription):
+    print("working on it...")
+
+def main():
+    print("Tell me a little bit about yourself")
+    audio = record_microphone()
+    transcription = audio_to_text(audio)
+    result = grade_response(transcription)
 
 if __name__ == "__main__":
-    PORT = os.getenv('PORT', 5000) 
-    app.run(debug=True,port=PORT)
+    main()
