@@ -18,4 +18,4 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-CMD ["python"]
+CMD ["python", "machine_learning_client.py"]
