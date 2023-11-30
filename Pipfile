@@ -12,6 +12,10 @@ pymongo = "*"
 speechrecognition = "*"
 pyaudio = "*"
 setuptools = "*"
+tomli = "*"
+typing-extensions = "*"
+dill = "*"
+python-dotenv = "*"
 
 [dev-packages]
 

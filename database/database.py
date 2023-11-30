@@ -1,5 +1,7 @@
+"""
+database file to connect ot database
+"""
 import os
-
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
