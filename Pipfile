@@ -13,6 +13,7 @@ speechrecognition = "*"
 pyaudio = "*"
 setuptools = "*"
 tomli = "*"
+typing-extensions = "*"
 
 [dev-packages]
 
