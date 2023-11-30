@@ -1,4 +1,3 @@
-
 """
 app.py file that helps serve as the front end of our application
 """
@@ -39,13 +38,13 @@ def analyze_data():
         result = subprocess.run(
             [
                 "C:\\Users\\Andrew - User\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
-                "E:\\4-containerized-app-exercise-rizzballs\\machine-learning-client\\machine_learning_client.py", # pylint: disable=line-too-long
-                audio_path, # pylint: disable=line-too-long disable=trailing-whitespace
+                "E:\\4-containerized-app-exercise-rizzballs\\machine-learning-client\\machine_learning_client.py",  # pylint: disable=line-too-long
+                audio_path,  # pylint: disable=line-too-long disable=trailing-whitespace
             ],
             capture_output=True,
             text=True,
-            check=True
-            )
+            check=True,
+        )
         if result.returncode == 0:
             print("Process succeeded!")
         else:
@@ -58,8 +57,6 @@ def analyze_data():
 
     except subprocess.CalledProcessError as e:
         return jsonify({"status": "error", "message": f"Subprocess failed: {str(e)}"})
-
-
 
 
 if __name__ == "__main__":
