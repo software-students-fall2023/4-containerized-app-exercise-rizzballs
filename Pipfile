@@ -12,6 +12,7 @@ pymongo = "*"
 speechrecognition = "*"
 pyaudio = "*"
 setuptools = "*"
+tomli = "*"
 
 [dev-packages]
 
