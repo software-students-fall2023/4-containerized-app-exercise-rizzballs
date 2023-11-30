@@ -34,3 +34,4 @@ def analyzeData():
 if __name__ == "__main__":
     PORT = os.getenv('PORT', 5000) 
     app.run(debug=True, port=PORT)
+
