@@ -14,6 +14,7 @@ pyaudio = "*"
 setuptools = "*"
 tomli = "*"
 typing-extensions = "*"
+dill = "*"
 
 [dev-packages]
 
