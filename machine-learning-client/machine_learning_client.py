@@ -5,6 +5,7 @@ to text transcription and analysis of audio transcription
 from enum import Enum
 import pyaudio
 import speech_recognition as sr
+<<<<<<< HEAD
 
 class ML:
     """Machine Learning class functions """
@@ -63,6 +64,67 @@ class ML:
         Give out a score based on the transcribed audio
 
 
+=======
+
+
+class ML:
+    """Machine Learning class functions """
+    pa = pyaudio.PyAudio()
+
+    def list_all_mic(self):
+        """
+        List all available microphone device
+        """
+        if len(sr.Microphone.list_microphone_names()) == 0:
+            print("no device available")
+            return
+
+        for index, name in enumerate(sr.Microphone.list_microphone_names()):
+            print(f'Microphone with name "{name}"')
+            print(f" found for `Microphone(device_index={index})`")
+
+    def record_microphone(self):
+        """Function for recording microphone input"""
+        ML.list_all_mic(self)  # Use for debug
+        mc = None
+        try:
+            mc = sr.Microphone()
+            print("Mic init successful")
+        except OSError:
+            mc = sr.Microphone(0)
+            print("no default mic")
+        with mc as source:
+            print("Please give your answer:")
+            r = sr.Recognizer()
+            audio = r.listen(source)
+        return audio
+
+    def audio_to_text(self, audio_file_string):
+        """Function for converting audio file to text transcription"""
+        r = sr.Recognizer()
+        with sr.AudioFile(audio_file_string) as source:
+            ad = r.listen(source)
+        try:
+            transcription = r.recognize_google(ad)
+            print(transcription)
+            print(type(transcription))
+        except sr.UnknownValueError:
+            print("Sorry, we could not recognize your response.")
+        except sr.RequestError:
+            print("Sorry, there appears to be an error with Google Speech to Text")
+        return transcription
+
+    class BuzzWord(Enum):
+        """List of Buzzwords"""
+        HELLO = "hello"
+        UGH = "ugh"
+
+    def grade_response(self, transcription):
+        """
+        Give out a score based on the transcribed audio
+
+
+>>>>>>> 5a0af371e4dbfe2fdc0328cf9e5f1e13a84def20
         Args:
             transcription (str): transcribed audio
         """
@@ -78,12 +140,19 @@ def main():
     """Main Method"""
     print("Tell me a little bit about yourself")
     ml = ML()
+<<<<<<< HEAD
     audio = r'..\\web-app\uploads\user_audio.wav'
     transcription = ml.audio_to_text(audio)
     result = ml.grade_response(transcription)
     print(result)
     print("test main")
    
+=======
+    audio = ml.record_microphone()
+    transcription = ml.audio_to_text(audio)
+    result = ml.grade_response(transcription)
+    print(result)
+>>>>>>> 5a0af371e4dbfe2fdc0328cf9e5f1e13a84def20
 
 
 if __name__ == "__main__":
