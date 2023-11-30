@@ -7,64 +7,64 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    {% extends 'base.html' %} {% block Base %}
+    {% extends 'base.html' %} 
+    {% block Base %}
         <div class="buttonContainer">
             <h2 style="text-align:center">What is our machine Learning app?</h2>
             <button type="submit" onclick="beginRecording()"> Start Recording Audio </button>
             <button type="submit" onclick="stopRecording()"> Stop Recording Audio </button>
         </div>
         <div class="buttonContainer">
-            <p class="displayReuslts"> reuslts of analysis will be place here</p>
+            <p class="displayReuslts">Results of analysis will be placed here</p>
         </div>
 
         <script>
             let mediaRecorder;
             let audioChunks = [];
-            let wordCount = 0;
 
             async function beginRecording() {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                const audioContext = new AudioContext();
-                const audioInput = audioContext.createMediaStreamSource(stream);
-                mediaRecorder = new MediaREcorder(audioContext);
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
 
-                mediaRecorder.ondataavailable = (event) =>{
-                    audioChunks.push(event.data);
-                };
+                    if (stream instanceof MediaStream) {
+                        mediaRecorder = new MediaRecorder(stream);
 
-                mediaRecorder.onstop = async () =>{
-                    const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        mediaRecorder.ondataavailable = (event) => {
+                            audioChunks.push(event.data);
+                        };
 
-                    const formData = new FormData();
-                    formData.append('audio', audioBlob);
+                        mediaRecorder.onstop = async () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
 
-                    const response = await fetch('/anaylzeData', {
-                        method: 'POST',
-                        body: formData
-                    });
+                            const formData = new FormData();
+                            formData.append('audio', audioBlob);
 
-                    /**
-                     * const result = await response.json();
-                     * const transcription = result.transcription;
-                     * 
-                     *
-                     * 
-                     */
+                            try {
+                                const response = await fetch('/analyzeData', {
+                                    method: 'POST',
+                                    body: formData
+                                });
 
+                                const result = await response.json();
+                                console.log(result);
+                            } catch (error) {
+                                console.error('Error sending data to server:', error);
+                            }
+                        }
+
+                        mediaRecorder.start();
+                    } else {
+                        console.error('Failed to obtain a valid MediaStream object.');
+                    }
+                } catch (error) {
+                    console.error('Error getting user media:', error);
                 }
-
-                //audioInput.connect(mediaRecorder);
-                //mediaRecorder.connect(audioContext.destination);
-                //mediaRecorder.start();
             }
 
-            function stopRecording(){
-                mediaRecorder.stop()
+            function stopRecording() {
+                mediaRecorder.stop();
             }
         </script>
-
     {% endblock %}
-    
-    
 </body>
 </html>
