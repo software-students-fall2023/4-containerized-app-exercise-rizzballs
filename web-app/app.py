@@ -67,7 +67,7 @@ def grade_transcription():
     Function to generate a page giving a break down and grade of an audio transcript someone had just recorded
     """
     transcripts = db['transcripts']
-    my_transcript = transcripts.find().sort({$natural: -1}).limit(1)
+    my_transcript = transcripts.find().sort([('$natural', pymongo.DESCENDING)]).limit(1)
     grade = 0
     filler_words = 0
     buzz_words = 0
