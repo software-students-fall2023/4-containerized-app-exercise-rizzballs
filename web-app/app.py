@@ -5,6 +5,8 @@ app.py file that helps serve as the front end of our application
 import os
 import subprocess
 from flask import Flask, render_template, request, jsonify
+import sys
+from pydub import AudioSegment
 import pymongo
 from pymongo import MongoClient
 
@@ -14,6 +16,11 @@ app = Flask("project4")
 
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+client = MongoClient("mongodb://localhost:27017/")
+db = client["ml_databse"]
+collection = db["transcription"]
 
 
 @app.route("/")
@@ -37,17 +44,36 @@ def analyze_data():
         audio_path = os.path.join(app.config["UPLOAD_FOLDER"], "user_audio.wav")
         audio_file.save(audio_path)
 
+        # Converting the audio to the correct format
+        webm_audio = AudioSegment.from_file(audio_path, format="webm")
+        audio_path = audio_path.replace(".wav", "_converted.wav")
+        webm_audio.export(audio_path, format="wav")
+
         print("Audio file saved at:", audio_path)
+        python_interpreter = sys.executable
+        ## this is getting the file path for teh machine_learning_client hopefuly this should work with windows as well. 
+        machine_learning_client_path = os.path.join(PROJECT_ROOT, "machine-learning-client", "machine_learning_client.py")
+        print(machine_learning_client_path)
+
+        # Constructing the path to the audio file based on layout hopefully this works on window 
+        web_app_directory = os.path.join(PROJECT_ROOT, "web-app")
+        audio_file_name = os.path.join("uploads", "user_audio_converted.wav")
+        audio_path = os.path.join(web_app_directory, audio_file_name)
+        print("this is audio path: ", audio_path)
+        print()
+
+        
         result = subprocess.run(
-            [
-                "C:\\Users\\Andrew - User\\AppData\\Local\\Microsoft\\WindowsApps\\python.exe",
-                "E:\\4-containerized-app-exercise-rizzballs\\machine-learning-client\\machine_learning_client.py",  # pylint: disable=line-too-long
-                audio_path,  # pylint: disable=line-too-long disable=trailing-whitespace
-            ],
+            [python_interpreter, "-u", machine_learning_client_path, audio_path],
             capture_output=True,
             text=True,
             check=True,
         )
+        ## this is if nothing is getting printed it on the terminal at first from the results of the subproceess being run on the machine_learning_client.py
+        ## this should print out the results of the machine_learning_client.py and show the results
+        print("Standard Output:")
+        print(result.stdout)
+
         if result.returncode == 0:
             print("Process succeeded!")
         else:
@@ -67,7 +93,7 @@ def grade_transcription():
     Function to generate a page giving a break down and grade of an audio transcript someone had just recorded
     """
     transcripts = db['transcripts']
-    my_transcript = transcripts.find().sort({$natural: -1}).limit(1)
+    my_transcript = collection.find_one(sort=[('_id', -1)])
     grade = 0
     filler_words = 0
     buzz_words = 0

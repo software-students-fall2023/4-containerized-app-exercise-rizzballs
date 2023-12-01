@@ -16,6 +16,7 @@ tomli = "*"
 typing-extensions = "*"
 dill = "*"
 python-dotenv = "*"
+pydub = "*"
 
 [dev-packages]
 

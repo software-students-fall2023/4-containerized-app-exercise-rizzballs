@@ -3,7 +3,10 @@ Machine Learning python file providing conversion of audio
 to text transcription and analysis of audio transcription
 """
 from enum import Enum
+import sys
 import pyaudio
+import pymongo
+from pymongo import MongoClient
 import speech_recognition as sr
 
 
@@ -39,6 +42,22 @@ class ML:
             r = sr.Recognizer()
             audio = r.listen(source)
         return audio
+    
+    def add_transcription_mongo(self, transcription):
+        """
+        Save transcription to MongoDB
+        """
+        try:
+            client = MongoClient("mongodb://localhost:27017/")
+            db = client["ml_databse"]
+            collection = db["transcription"]
+
+            data = {"transcription": transcription}
+            result = collection.insert_one(data)
+            print(f"Transcription saved to MongoDB with ID: {result.inserted_id}")
+
+        except Exception as e:
+            print(f"Error saving transcription to MongoDB: {e}")
 
     def audio_to_text(self, audio_file_string):
         """Function for converting audio file to text transcription"""
@@ -79,14 +98,40 @@ class ML:
 
 def main():
     """Main Method"""
+
+    """
+    ## this is to test if you just want to run the machine_learning_client.py by itself.
     print("Tell me a little bit about yourself")
     ml = ML()
-    audio = r"..\\web-app\uploads\user_audio.wav"
+    audio = r"/Users/keioshima/Documents/projects-fall-2023/4-containerized-app-exercise-rizzballs/web-app/uploads/user_audio.wav"
+    replace: /Users/keioshima/Documents with the neccessary string so for windows it may start with C// or something
     transcription = ml.audio_to_text(audio)
     result = ml.grade_response(transcription)
     print(result)
     print("test main")
+    
+    """
 
+    try:
+        print("Tell me a little bit about yourself")
+        ml = ML()
+        # Check if command-line arguments are provided
+        if len(sys.argv) != 2:
+            print("Usage: python machine_learning_client.py <audio_path>")
+            sys.exit(1)
+
+        audio_path = sys.argv[1]
+        print("This is audio path: ", audio_path)
+
+        transcription = ml.audio_to_text(audio_path)
+        print(transcription)
+        ml.add_transcription_mongo(transcription)
+        result = ml.grade_response(transcription)
+        print(result)
+        
+    except Exception as e:
+        print(f"Error in machine_learning_client.py: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
