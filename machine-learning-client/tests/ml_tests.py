@@ -2,17 +2,19 @@
 tests for machine-learning-client
 """
 from machine_learning_client import ML
-
+import os
 
 class Tests:
     """Tests class for ml_tests.py"""
-
     def test_audio_text_conversion(self):
         """testing audio_to_text function in ML with valid audiofile as input"""
+        PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        tests_path = "tests"
+        file_name = "richard.aiff"
+        file_path = os.path.join(PROJECT_ROOT, tests_path, file_name)
+        print(file_path)
         actual = ML.audio_to_text(
-            self,
-            r"C:\Users\Administrator\Desktop\NYU_Undergrad\SoftwareEngineering"
-            r"\4-containerized-app-exercise-rizzballs\machine-learning-client\tests\richard.aiff",
+            self, file_path
         )
         assert isinstance(
             actual, str
