@@ -10,6 +10,14 @@ Our WebApp is designed to help users practice and improve their interview skills
 
 In Progress
 
+### Install ffmpeg (Windows)
+1. Go to the official ffmpeg website, hover over the windows icon, and click Windows builds from gyan.dev
+2. Download ffmpeg-git-full.7z under "latest git master branch build
+3. Extract the files to desired location
+4. Open your System Environment Variables on your windows control panel. Under User Variables, click on "Path" under "User Variables" and click edit. Add the directory to the bin of the extracted ffmpeg. It should look something like "[Folder Location]\ffmpeg-2023-11-28-git-47e214245b-full_build\bin". Press Ok until you're exited completely out of System Properties. 
+
+This should allow you to use ffmpeg while using our program. Make sure to use a clean shell to make sure it is up to date
+
 ## Contributors
 
 - [Andrew Huang](https://github.com/andrew0022)
