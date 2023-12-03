@@ -20,6 +20,7 @@ pydub = "*"
 flask-cors = "*"
 requests = "*"
 coverage = "*"
+pytest-flask = "*"
 
 [dev-packages]
 
