@@ -3,7 +3,7 @@ app.py file that helps serve as the front end of our application
 """
 
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, Response, render_template, request, redirect, send_file
 import sys
 import pymongo
 from pymongo import MongoClient
@@ -11,8 +11,11 @@ import requests
 
 
 
-app = Flask("project4")
+app = Flask("project4", template_folder="templates")
 
+@app.route("/test_render_template")
+def test_render_template():
+    return render_template("root.html")
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["ml_databse"]
