@@ -34,6 +34,7 @@ jobs:
           python -m pip install pipenv
           pip install -r requirements.txt 
           pipenv shell --fancy --python $(which python)
+          pipenv install exceptiongroup
           pipenv sync
         working-directory: machine-learning-client
 
