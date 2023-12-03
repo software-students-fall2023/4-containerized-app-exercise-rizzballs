@@ -17,6 +17,9 @@ typing-extensions = "*"
 dill = "*"
 python-dotenv = "*"
 pydub = "*"
+flask-cors = "*"
+requests = "*"
+coverage = "*"
 
 [dev-packages]
 
