@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'Roboto Mono';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/robotomono/v22/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_gPq_ROW4AJi8SJQt.woff2) format('woff2');
+}
+
 body {
     background-color: #71a7e0; 
     margin: 0;
@@ -21,11 +29,20 @@ body {
     padding: 20px;
     margin: 50px auto;
     text-align: center;
-    }
-form {
-    padding-left: 60px;
-    padding-right: 60px;
 }
+
+.buttonContainer{
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    margin-top: 32px;
+}
+
+.button{
+    font-size: 12px;
+    background-color: lightsteelblue;
+    
+}
+
 .about {
     background-color: #ffffff;
     max-width: 800px;
@@ -37,62 +54,13 @@ form {
     margin: 10px auto;
 }
 
-@font-face {
-    font-family: 'Roboto Mono';
-    font-style: normal;
-    font-weight: 300;
-    font-display: swap;
-    src: url(https://fonts.gstatic.com/s/robotomono/v22/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_gPq_ROW4AJi8SJQt.woff2) format('woff2');
-}
-
-.add-food-form{
-    display: block;
-    text-align: center;
-    font-size: 1.2em;
-    font-family: 'Roboto Mono', monospace;
-    align-items: center;
-}
-
 h1, h2, h3{
     text-align: center;
 }
 
-.login-form{
-    display: block;
-     text-align: center;
-     font-size: 2em; 
-     font-family: 'Roboto Mono', monospace;
-    
-}
-
-.login-input, .password-input {
-    width: 300px;
-    height: 40px;
-}
-
-.login-submit-button{
-    width: 150px;
-    height: 40px;
-}
-
-.search-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 50px;
-}
-.search-box {
-    padding: 10px;
-    border-radius: 6px;
-    width: 250px;
-    margin-right: 10px;
-}
-.search-button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+.status-Message {
+    text-align: center;
+    font-size: 24px;
 }
 
 .BaseNav{
@@ -112,21 +80,13 @@ a {
     color: inherit; 
 }
 
-.food-trucks-container{
-    display: flex;
-    flex-wrap: wrap;
-    padding-left: 10px;
+p{
+    font-size: 20px;
+    text-align: center;
 }
 
-.food-truck-divs{
-    border: 1px solid black;
-    border-radius: 13px;
-    padding: 10px;
-    margin-bottom: 10px;
-}
-
-.Edit_Delete_Buttons > button{
-    display: inline-block;
+li{
+    font-size: 21px;
 }
 
 

@@ -15,20 +15,13 @@
 
     <div class="container">
         <form action="/" style="display:inline-block;">
-            <input type="submit" value="placeHolder 1" class=" {% if activePage== 'SearchCuisine' %}active{% endif %} BaseNav"/>
+            <input type="submit" value="record answer" class="BaseNav"/>
         </form>
 
-        <form action="/" style="display:inline-block;">
-            <input type="submit" value="placeHolder 2" class=" {% if activePage == 'ViewAllFood' %}active{% endif %} BaseNav"/>
+        <form action="/results" style="display:inline-block;">
+            <input type="submit" value="results page" class="BaseNav"/>
         </form>
 
-        <form action="/" style="display:inline-block;">
-            <input type="submit" value="placeHolder 3" class=" {% if activePage == 'ViewMyFood' %}active{% endif %} BaseNav"/>
-        </form>
-        
-        <form action="/" style="display:inline-block;">
-            <input type="submit" value="placeHolder 4" class=" {% if activePage == 'AddFoodTruck' %}active{% endif %} BaseNav"/>
-        </form>
     </div>
 
     <main>{% block Base %} {% endblock %}</main>

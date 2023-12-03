@@ -9,13 +9,21 @@
 <body>
     {% extends 'base.html' %} 
     {% block Base %}
+        <p>our application aims to help you get better at interviewing by help you practice one of th emost common interview question. To use our application press teh start recording button and begin answering the question. When you finish answering press stop recording and wait for a grade response is ready message before navigating to teh results page</p>
+        <h1>Question: tell me about yourself?</h3>
+
         <div class="buttonContainer">
-            <h2 style="text-align:center">What is our machine Learning app?</h2>
-            <button type="submit" onclick="beginRecording()"> Start Recording Audio </button>
-            <button type="submit" onclick="stopRecording()"> Stop Recording Audio </button>
+            <button  style="background-color:lawngreen; font-size: 26px;  border-radius: 20px; font-family:inherit" type="submit" onclick="beginRecording()"> Start Recording Audio </button>
         </div>
+
         <div class="buttonContainer">
-            <p class="displayReuslts">Results of analysis will be placed here</p>
+            <button style="background-color:firebrick; font-size: 26px;  border-radius: 20px; font-family:inherit" type="submit" onclick="stopRecording()"> Stop Recording Audio </button>
+        </div>
+
+        <div id="statusMessage">
+            <p id="recordingMessage" class="status-Message" style="display: none;">Recording audio...</p>
+            <p id="processingMessage" class="status-Message" style="display: none;">Processing audio. Please don't go to the results page yet.</p>
+            <p id="completionMessage" class="status-Message" style="display: none;">Analysis has finished. You can go to the results page.</p>
         </div>
 
         <script>
@@ -36,6 +44,9 @@
                         mediaRecorder.onstop = async () => {
                             const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
 
+                            document.getElementById('recordingMessage').style.display = 'none';
+                            document.getElementById('processingMessage').style.display = 'block';
+
                             const formData = new FormData();
                             formData.append('audio', audioBlob);
 
@@ -50,8 +61,10 @@
                             } catch (error) {
                                 console.error('Error sending data to server:', error);
                             }
+                            document.getElementById('processingMessage').style.display = 'none';
+                            document.getElementById('completionMessage').style.display = 'block';
                         }
-
+                        document.getElementById('recordingMessage').style.display = 'block';
                         mediaRecorder.start();
                     } else {
                         console.error('Failed to obtain a valid MediaStream object.');
