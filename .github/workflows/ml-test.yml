@@ -1,9 +1,12 @@
 name: ML Tests
 
-on:
-  push:
-    branches:
-      - main
+run-name: ${{ github.actor }} is automating using Github Actions
+
+on: 
+    push:
+      branches: [main, master]
+    pull_request:
+      branches: [main, master]
 
 jobs:
   test:
@@ -21,9 +24,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt 
+        python -m pip install pipenv
+        pipenv install -r requirements.txt 
+        pipenv sync
 
     - name: Run tests
       run: |
         cd machine-learning-client/tests
-        pytest --cov=machine_learning_client.py ml_tests.py
+        pipenv run pytest --cov=machine_learning_client.py ml_tests.py
