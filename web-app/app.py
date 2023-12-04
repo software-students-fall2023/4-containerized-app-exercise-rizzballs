@@ -7,10 +7,10 @@ from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import requests
 
-app = Flask("__name__, template_folder='templates'")
+app = Flask(__name__, template_folder="templates")
 
 # Connect to MongoDB
-client = MongoClient("mongodb://127.0.0.1:27017/")
+client = MongoClient("mongodb://mongodb:27017/")
 db = client["ml_database"]
 collection = db["transcription"]
 
@@ -57,7 +57,7 @@ def analyze_data():
             return jsonify({"status": "error", "message": "No audio file provided"})
 
         audio_file = request.files["audio"]
-        ml_client_url = "http://127.0.0.1:5001/analyzeAudio"
+        ml_client_url = "http://backend:5001/analyzeAudio"
         # Use the converted audio file
         response = requests.post(
             ml_client_url, files={"audio": audio_file}, timeout=100
