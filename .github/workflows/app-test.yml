@@ -39,5 +39,5 @@ jobs:
 
       - name: Run tests
         run: |
-          pipenv run pytest --cov=app.py test_app.py
+          pipenv run pytest --cov=app test_app.py
         working-directory: web-app/app_tests
