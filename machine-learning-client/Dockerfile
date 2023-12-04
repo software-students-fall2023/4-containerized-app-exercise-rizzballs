@@ -1,21 +1,20 @@
 FROM python:3.11
 
-WORKDIR /app
 
-#COPY Pipfile Pipfile.lock ./
+WORKDIR /machine-learning-client
 
-#RUN pip install pipenv && pipenv install --deploy --ignore-pipfile
-RUN apt-get -y update
+COPY requirements.txt ./
+# Install ffmpeg for format conversion
+RUN apt-get update && apt-get install -y ffmpeg
 RUN apt-get -y install libasound-dev
 RUN apt-get -y install portaudio19-dev
-# Set up microphone access in the Dockerfile
-RUN apt-get update && apt-get install -y alsa-utils
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-WORKDIR /usr/src/app
-COPY requirements.txt ./
+COPY . /machine-learning-client
 
-COPY . .
+EXPOSE 5001
 
-RUN pip install -r requirements.txt
+ENV NAME World
 
 CMD ["python", "machine_learning_client.py"]
