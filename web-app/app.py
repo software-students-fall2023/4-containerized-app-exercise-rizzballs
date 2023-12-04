@@ -3,42 +3,32 @@ app.py file that helps serve as the front end of our application
 """
 
 import os
-from flask import (
-    Flask,
-    Response,
-    render_template,
-    request,
-    redirect,
-    send_file,
-    jsonify,
-)
-import sys
+from flask import Flask, render_template, request, jsonify
 import pymongo
 from pymongo import MongoClient
 import requests
 
-
 app = Flask(__name__, template_folder="templates")
 
+# Connect to MongoDB
+client = MongoClient("mongodb://localhost:27017/")
+db = client["ml_database"]
+collection = db["transcription"]
 
 @app.route("/test_render_template")
 def test_render_template():
+    """
+    Request received for /test_render_template
+    """
     print("Request received for /test_render_template")
     return render_template("root.html")
-
-
-client = MongoClient("mongodb://localhost:27017/")
-db = client["ml_databse"]
-collection = db["transcription"]
-
 
 @app.route("/")
 def root_page():
     """
-    template to render root page
+    Template to render root page
     """
     return render_template("root.html")
-
 
 @app.route("/results")
 def display_results():
@@ -54,11 +44,10 @@ def display_results():
         "results.html", transcription_result=my_transcript, activePage="results.html"
     )
 
-
 @app.route("/analyzeData", methods=["POST"])
 def analyze_data():
     """
-    Function to send genreated audio file to the machine learning client
+    Function to send generated audio file to the machine learning client
     """
     try:
         if "audio" not in request.files:
@@ -66,25 +55,22 @@ def analyze_data():
 
         audio_file = request.files["audio"]
         ml_client_url = "http://127.0.0.1:5001/analyzeAudio"
+        
         # Use the converted audio file
-        response = requests.post(
-            ml_client_url, files={"audio": audio_file}, timeout=100
-        )
+        response = requests.post(ml_client_url, files={"audio": audio_file}, timeout=100)
         print("sent over")
+
         if response.status_code == 200:
             result = response.json()
             return jsonify(result)
         else:
             return (
-                jsonify(
-                    {"error": "Failed to send and process audio. Please try again."}
-                ),
+                jsonify({"error": "Failed to send and process audio. Please try again."}),
                 500,
             )
 
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": f"File not found: {str(e)}"})
-
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
