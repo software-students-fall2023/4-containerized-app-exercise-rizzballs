@@ -9,19 +9,30 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11"]
 
     steps:
-    - name: CICD
-      uses: appleboy/ssh-action@v0.1.2
-      with:
-        host: ${{secrets.SSH_HOST_RQ}}
-        key: ${{secrets.SSH_KEY_RQ}}
-        username: ${{secrets.SSH_USERNAME_RQ}}
+      - uses: actions/checkout@v3
 
-        script: |
-          mkdir test
-          cd test
-          git clone git@github.com:software-students-fall2023/4-containerized-app-exercise-rizzballs.git
-          echo 'deploy success'
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: CICD
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.SSH_HOST_RQ}}
+          key: ${{secrets.SSH_KEY_RQ}}
+          username: ${{secrets.SSH_USERNAME_RQ}}
 
-
+          script: |
+            cd 4-containerized-app-exercise-rizzballs/
+            docker container prune -f
+            docker image prune -f
+            docker volume prune -f
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
