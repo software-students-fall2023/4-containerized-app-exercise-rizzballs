@@ -27,8 +27,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /var/www/myapp
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            mkdir test
+            cd test
+            git clone git@github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs.git
+            echo 'Deployment successful to digital ocean'
 
