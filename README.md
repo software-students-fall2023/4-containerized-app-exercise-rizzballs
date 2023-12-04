@@ -10,16 +10,20 @@ Our WebApp is designed to help users practice and improve their interview skills
 
 ## Installation and Usage
 
+### Prerequisites
+1. ensure you have python 3.11 or higher installed 
+2. ensure you have have Docker installed and running on your computer.
+3. optionally have docker Desktop 
 ### Method 1: Cloning the Github Repository
 1. Clone the directory through Git Bash with the command:
 
 ```
-https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs.git
+git clone https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs.git
 ```
 
-2. Open Docker Desktop
+2. Open Docker Desktop or a new terminal 
 
-3. In your command prompt, access the directory where you cloned the repository:
+3. In your command prompt/terminal, access the directory where you cloned the repository:
 ```
 cd "path_to_directory"
 ```
@@ -29,8 +33,35 @@ cd "path_to_directory"
 docker-compose build
 docker-compose up
 ```
-
 5. Now, access the http://127.0.0.1:5000/ in your browser of choice.
+
+6. to end the session 
+```
+docker-compose stop
+```
+or 
+```
+docker-compose down
+```
+
+### Note for MacOS Users:
+1. after doing docker-compose build and then running docker-compose up leads you to this error: 
+```
+Error response from daemon: Ports are not available: listen tcp 0.0.0.0:5000: bind: address already in use.
+
+```
+2. to trouble shoot thisin your terminal run:
+```
+lsof -i tcp:5000
+```
+3. and kill that process by doing 
+```
+kill -9 <ProcessID>
+```
+4. if however, two processes appear when you run the above command then "Airplay" should be turned off
+5. to do so go to system settings -> search up air drop and click on "AirDrop and Handoff" -> from there turn off "AirPlay receiver".
+6. and then try docker-compose up again. 
+
 
 ### Install ffmpeg (Windows)
 1. Go to the official ffmpeg website, hover over the windows icon, and click Windows builds from gyan.dev
@@ -39,6 +70,13 @@ docker-compose up
 4. Open your System Environment Variables on your windows control panel. Under User Variables, click on "Path" under "User Variables" and click edit. Add the directory to the bin of the extracted ffmpeg. It should look something like "[Folder Location]\ffmpeg-2023-11-28-git-47e214245b-full_build\bin". Press Ok until you're exited completely out of System Properties. 
 
 This should allow you to use ffmpeg while using our program. Make sure to use a clean shell to make sure it is up to date
+
+### Install ffmpeg (Windows)
+1. in your terminal type in 
+```
+brew install ffmpeg 
+```
+This should allow you to use ffmpeg while using our program
 
 ## Contributors
 
