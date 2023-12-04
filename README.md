@@ -47,7 +47,7 @@ docker-compose down
 
 With deployment to Digital Ocean, you can access our webapp directly by typing in your url: 165.227.220.8:5000
 
-### Note for MacOS Users:
+#### Note for MacOS Users:
 1. After doing docker-compose build and then running docker-compose up leads you to this error: 
 ```
 Error response from daemon: Ports are not available: listen tcp 0.0.0.0:5000: bind: address already in use.
@@ -65,7 +65,7 @@ kill -9 <ProcessID>
 5. To do so go to system settings -> search up air drop and click on "AirDrop and Handoff" -> from there turn off "AirPlay receiver".
 6. Then try docker-compose up again. 
 
-### Special Instructions for Chrome Users
+#### Special Instructions for Chrome Users
 If you are using Google Chrome, the application may not work due to microphone access problems. You can bypass security restrictions due to the site being hosted on a bare IP address by:
 
 1. **Open Chrome Flags**:
