@@ -39,5 +39,5 @@ jobs:
 
       - name: Run tests
         run: |
-          pipenv run pytest --cov=machine_learning_client.py ml_tests.py
+          pipenv run pytest --cov=machine_learning_client ml_tests.py
         working-directory: machine-learning-client/tests
