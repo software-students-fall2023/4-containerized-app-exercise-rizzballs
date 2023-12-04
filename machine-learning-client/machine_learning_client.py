@@ -40,7 +40,7 @@ def add_transcription_mongo(transcription, grade_report):
         result = collection.insert_one(data)
         print(f"Transcription saved to MongoDB with ID: {result.inserted_id}")
 
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         print(f"Error saving transcription to MongoDB: {e}")
 
 
@@ -62,8 +62,9 @@ def audio_to_text(audio_file_string):
     return transcription
 
 
-
-def grade_transcription(transcription_text): # pylint: disable=too-many-branches,too-many-statements
+def grade_transcription(
+    transcription_text,
+):  # pylint: disable=too-many-branches,too-many-statements
     """
     Function to generate a page giving a break down and grade of an audio transcript someone had just recorded # pylint: disable=line-too-long
     """
@@ -97,17 +98,17 @@ def grade_transcription(transcription_text): # pylint: disable=too-many-branches
     grade_analysis = ""
 
     if buzz_words == 0:
-        bz_breakdown = "You did not use any buzz words. When answering this question, try to talk about your education, work experiences, major, or any jobs you had." # pylint: disable=line-too-long
+        bz_breakdown = "You did not use any buzz words. When answering this question, try to talk about your education, work experiences, major, or any jobs you had."  # pylint: disable=line-too-long
     elif 0 < buzz_words <= 5:
-        bz_breakdown = f"You used {buzz_words} buzz words. A decent answer, but you can improve. Try to find more things to say about yourself professionally." # pylint: disable=line-too-long
+        bz_breakdown = f"You used {buzz_words} buzz words. A decent answer, but you can improve. Try to find more things to say about yourself professionally."  # pylint: disable=line-too-long
     else:
-        bz_breakdown = f"You used {buzz_words} buzz words. The topics of your answer are acceptable. Make sure to keep in mind your wording and topics." # pylint: disable=line-too-long
+        bz_breakdown = f"You used {buzz_words} buzz words. The topics of your answer are acceptable. Make sure to keep in mind your wording and topics."  # pylint: disable=line-too-long
     if filler_words == 0:
-        fw_breakdown = "You did not use any filler words. Or there was a problem with the audio transcript. Either way, remember to talk confidently and at a good pace." # pylint: disable=line-too-long
+        fw_breakdown = "You did not use any filler words. Or there was a problem with the audio transcript. Either way, remember to talk confidently and at a good pace."  # pylint: disable=line-too-long
     elif 0 < filler_words <= 5:
-        fw_breakdown = f"You used {filler_words} filler words. From here, you just need to practice your answer until it comes out naturally. Make sure to keep relaxed." # pylint: disable=line-too-long
+        fw_breakdown = f"You used {filler_words} filler words. From here, you just need to practice your answer until it comes out naturally. Make sure to keep relaxed."  # pylint: disable=line-too-long
     else:
-        fw_breakdown = f"You used {filler_words} filler words. When giving your answer, try speaking slower and more clearly. Don't confuse yourself by thinking too far ahead." # pylint: disable=line-too-long
+        fw_breakdown = f"You used {filler_words} filler words. When giving your answer, try speaking slower and more clearly. Don't confuse yourself by thinking too far ahead."  # pylint: disable=line-too-long
     grade = (buzz_words * 3) - filler_words
     print(grade)
     if grade > 20:
@@ -115,15 +116,15 @@ def grade_transcription(transcription_text): # pylint: disable=too-many-branches
     elif grade < 0:
         grade = 0
     if grade == 0:
-        grade_analysis = f"Your grade is {grade}/20. You should rethink your answer to be more focused and clearly thought out." # pylint: disable=line-too-long
+        grade_analysis = f"Your grade is {grade}/20. You should rethink your answer to be more focused and clearly thought out."  # pylint: disable=line-too-long
     elif 0 < grade <= 5:
-        grade_analysis = f"Your grade is {grade}/20. Refine your answer by reflecting on your education, work experience, and relevant info." # pylint: disable=line-too-long
+        grade_analysis = f"Your grade is {grade}/20. Refine your answer by reflecting on your education, work experience, and relevant info."  # pylint: disable=line-too-long
     elif 5 < grade <= 10:
-        grade_analysis = f"Your grade is {grade}/20. You're answer fulfills some of the necessary buzz words. If you have any more relevant data or ways to improve your speech, do so." # pylint: disable=line-too-long
+        grade_analysis = f"Your grade is {grade}/20. You're answer fulfills some of the necessary buzz words. If you have any more relevant data or ways to improve your speech, do so."  # pylint: disable=line-too-long
     elif 10 < grade <= 15:
-        grade_analysis = f"Your grade is {grade}/20. You gave a very good response. Everything beyond this is fine tuning your response to the interviewer." # pylint: disable=line-too-long
+        grade_analysis = f"Your grade is {grade}/20. You gave a very good response. Everything beyond this is fine tuning your response to the interviewer."  # pylint: disable=line-too-long
     else:
-        grade_analysis = f"Your grade is {grade}/20. This should be your go to answer, but it all depends on the interviewer. This answer should could out naturally and be your basis." # pylint: disable=line-too-long
+        grade_analysis = f"Your grade is {grade}/20. This should be your go to answer, but it all depends on the interviewer. This answer should could out naturally and be your basis."  # pylint: disable=line-too-long
     grade_report = {
         "filler_words": fw_breakdown,
         "buzz_words": bz_breakdown,
@@ -136,7 +137,7 @@ def grade_transcription(transcription_text): # pylint: disable=too-many-branches
 
 
 @app.route("/analyzeAudio", methods=["POST"])
-def analyze_Audios(): # pylint: disable=invalid-name
+def analyze_Audios():  # pylint: disable=invalid-name
     """
     Endpoint to receive and analyze audio file
     """
@@ -187,7 +188,7 @@ def analyze_Audios(): # pylint: disable=invalid-name
             200,
         )
 
-    except Exception as e: # pylint: disable=broad-exception-caught
+    except Exception as e:  # pylint: disable=broad-exception-caught
         return (
             jsonify({"status": "error", "message": f"An error occurred: {str(e)}"}),
             500,
