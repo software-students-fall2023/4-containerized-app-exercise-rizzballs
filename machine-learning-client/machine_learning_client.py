@@ -20,7 +20,7 @@ CORS(app)
 ## python3 machine_learning_client.py
 
 client = MongoClient("mongodb://mongodb:27017/")
-db = client["ml_databse"]
+db = client["ml_database"]
 collection = db["transcription"]
 
 
