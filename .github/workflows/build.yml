@@ -22,7 +22,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       
-
+      
 
       - name: CICD
         uses: appleboy/ssh-action@v0.1.2
@@ -32,7 +32,7 @@ jobs:
           username: ${{secrets.SSH_USERNAME_RQ}}
 
           script: |
-            mkdir rb
             cd rb
-            git clone git@github.com:software-students-fall2023/4-containerized-app-exercise-rizzballs.git
-            echo 'success'
+            docker-compose pull
+            docker-compose down
+            docker-compose up -d
