@@ -9,7 +9,7 @@ services:
 
   frontend:
     build: ./web-app # build the Docker image from the Dockerfile in the front-end directory
-    image: webapp
+    image: kingslayerrq/4-containerized-app-exercise-rizzballs:frontend-v2
     container_name: webappcontainer
     ports:
       - "5000:5000"
@@ -19,7 +19,7 @@ services:
 
   backend:
     build: ./machine-learning-client
-    image: mlclient
+    image: kingslayerrq/4-containerized-app-exercise-rizzballs:backend-v2
     container_name: mlcontainer
     ports:
       - "5001:5001"

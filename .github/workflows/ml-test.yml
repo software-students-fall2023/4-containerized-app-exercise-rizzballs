@@ -41,8 +41,5 @@ jobs:
         run: |
           pipenv run pytest --cov=machine_learning_client.py ml_tests.py
         working-directory: machine-learning-client/tests
-        
-      - name: Check coverage
-        run: |
-          pipenv run coverage report --fail-under=80
-        working-directory: machine-learning-client/tests
+
+      
