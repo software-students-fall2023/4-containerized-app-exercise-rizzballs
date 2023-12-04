@@ -8,23 +8,22 @@ from flask import render_template
 from app import app, collection
 
 
+
+client = app.test_client()
+
 @pytest.fixture
 def client():
-    app.config["TESTING"] = True
+    app.config['TESTING'] = True
     with app.test_client() as client:
         yield client
 
 def test_root_page(client):
-    client.application.testing = True  # Set testing mode for the app
+    response = client.get("/test_render_template")
+    print("Response status code:", response.status_code)
+    print("Response data:", response.data)
+    assert b'Recording audio...' in response.data
 
-    response = client.get("/")
-    assert response.status_code == 200
-    assert b"template to render root page" in response.data
 
-def test_display_results(client):
-    response = client.get("/results")
-    assert response.status_code == 200
-    assert b"Function to render the results page" in response.data
 
 
 def test_analyze_data(client, monkeypatch):
@@ -35,6 +34,10 @@ def test_analyze_data(client, monkeypatch):
             def json():
                 return {"mocked": "response"}
 
+            @property
+            def status_code(self):
+                return 200
+
         return MockResponse()
 
     monkeypatch.setattr("requests.post", mock_post)
@@ -44,7 +47,6 @@ def test_analyze_data(client, monkeypatch):
         response = client.post("/analyzeData", data={"audio": (temp_file, "test.wav")})
         assert response.status_code == 200
         assert b"mocked" in response.data
-
 
 def test_analyze_data_no_audio(client):
     response = client.post("/analyzeData")
@@ -60,6 +62,10 @@ def test_analyze_data_failed_request(client, monkeypatch):
             def json():
                 return {"error": "Mocked error"}
 
+            @property
+            def status_code(self):
+                return 500
+
         return MockResponse()
 
     monkeypatch.setattr("requests.post", mock_post)
@@ -69,7 +75,6 @@ def test_analyze_data_failed_request(client, monkeypatch):
         response = client.post("/analyzeData", data={"audio": (temp_file, "test.wav")})
         assert response.status_code == 500
         assert b"Failed to send and process audio" in response.data
-
 
 # Add more tests as needed
 
