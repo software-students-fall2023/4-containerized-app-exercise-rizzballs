@@ -7,19 +7,27 @@ from flask import Flask, render_template, request, jsonify
 from pymongo import MongoClient
 import requests
 
+app = Flask(__name__, template_folder="templates")
 
-app = Flask("project4")
-
-
-client = MongoClient("mongodb://mongodb:27017/")
-db = client["ml_databse"]
+# Connect to MongoDB
+client = MongoClient("mongodb://localhost:27017/")
+db = client["ml_database"]
 collection = db["transcription"]
+
+
+@app.route("/test_render_template")
+def test_render_template():
+    """
+    Request received for /test_render_template
+    """
+    print("Request received for /test_render_template")
+    return render_template("root.html")
 
 
 @app.route("/")
 def root_page():
     """
-    template to render root page
+    Template to render root page
     """
     return render_template("root.html")
 
@@ -42,27 +50,31 @@ def display_results():
 @app.route("/analyzeData", methods=["POST"])
 def analyze_data():
     """
-    Function to send genreated audio file to the machine learning client
+    Function to send generated audio file to the machine learning client
     """
     try:
         if "audio" not in request.files:
             return jsonify({"status": "error", "message": "No audio file provided"})
 
         audio_file = request.files["audio"]
-        ml_client_url = "http://backend:5001/analyzeAudio"
+        ml_client_url = "http://127.0.0.1:5001/analyzeAudio"
         # Use the converted audio file
         response = requests.post(
             ml_client_url, files={"audio": audio_file}, timeout=100
         )
         print("sent over")
+
+        # pylint: disable=R1705
         if response.status_code == 200:
             result = response.json()
             return jsonify(result)
-        return (
-            jsonify({"error": "Failed to send and process audio. Please try again."}),
-            500,
-        )
-
+        else:
+            return (
+                jsonify(
+                    {"error": "Failed to send and process audio. Please try again."}
+                ),
+                500,
+            )
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": f"File not found: {str(e)}"})
 
