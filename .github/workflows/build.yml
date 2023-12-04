@@ -32,10 +32,7 @@ jobs:
           username: ${{secrets.SSH_USERNAME_RQ}}
 
           script: |
-            cd 4-containerized-app-exercise-rizzballs/
-            docker container prune -f
-            docker image prune -f
-            docker volume prune -f
-            docker-compose pull
-            docker-compose down
-            docker-compose up -d
+            mkdir rb
+            cd rb
+            git clone git@github.com:software-students-fall2023/4-containerized-app-exercise-rizzballs.git
+            echo 'success'
