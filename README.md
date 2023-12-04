@@ -1,5 +1,4 @@
 # Interview Review WebApp
-![WebApp Machine Learning build test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/event-logger.yml/badge.svg)
 ![WebApp Subsystems build test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/lint.yml/badge.svg)
 ![WebApp MLC test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/ml-test.yml/badge.svg)
 ![WebApp WebApp test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/app-test.yml/badge.svg)
@@ -14,7 +13,7 @@ Our WebApp is designed to help users practice and improve their interview skills
 1. ensure you have python 3.11 or higher installed 
 2. ensure you have have Docker installed and running on your computer.
 3. optionally have docker Desktop 
-### Method 1: Cloning the Github Repository
+### Github Repository Cloning Option
 1. Clone the directory through Git Bash with the command:
 
 ```
@@ -44,23 +43,42 @@ or
 docker-compose down
 ```
 
-### Note for MacOS Users:
-1. after doing docker-compose build and then running docker-compose up leads you to this error: 
+### Website Access Option
+
+With deployment to Digital Ocean, you can access our webapp directly by typing in your url: 165.227.220.8:5000
+
+#### Note for MacOS Users:
+1. After doing docker-compose build and then running docker-compose up leads you to this error: 
 ```
 Error response from daemon: Ports are not available: listen tcp 0.0.0.0:5000: bind: address already in use.
 
 ```
-2. to trouble shoot thisin your terminal run:
+2. To trouble shoot this in your terminal, run:
 ```
 lsof -i tcp:5000
 ```
-3. and kill that process by doing 
+3. and kill that process by doing: 
 ```
 kill -9 <ProcessID>
 ```
-4. if however, two processes appear when you run the above command then "Airplay" should be turned off
-5. to do so go to system settings -> search up air drop and click on "AirDrop and Handoff" -> from there turn off "AirPlay receiver".
-6. and then try docker-compose up again. 
+4. If however, two processes appear when you run the above command then "Airplay" should be turned off
+5. To do so go to system settings -> search up air drop and click on "AirDrop and Handoff" -> from there turn off "AirPlay receiver".
+6. Then try docker-compose up again. 
+
+#### Special Instructions for Chrome Users
+If you are using Google Chrome, the application may not work due to microphone access problems. You can bypass security restrictions due to the site being hosted on a bare IP address by:
+
+1. **Open Chrome Flags**:
+   - Type `chrome://flags/#unsafely-treat-insecure-origin-as-secure` in your Chrome address bar and press `Enter`.
+
+2. **Enable Insecure Origins**:
+   - In the "Insecure origins treated as secure" section, add `http://165.227.220.8:5000`.
+   - Change the dropdown from 'Disabled' to 'Enabled'.
+
+3. **Relaunch Chrome**:
+   - Click the 'Relaunch' button to apply the changes.
+
+Warning: This is only a workaround and should be used cautiously as it can introduce security risks. It's recommended only for testing or non-sensitive use.
 
 
 ### Install ffmpeg (Windows)
@@ -77,6 +95,39 @@ This should allow you to use ffmpeg while using our program. Make sure to use a 
 brew install ffmpeg 
 ```
 This should allow you to use ffmpeg while using our program
+
+## Test Coverage
+
+You can view our most recent coverage results on your Github actions.
+
+This is our test coverage as of December 4th, 2023 for the machine learning client:
+
+```
+---------- coverage: platform linux, python 3.11.6-final-0 -----------
+Name                                                                                                                                                 Stmts   Miss  Cover
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/home/runner/work/4-containerized-app-exercise-rizzballs/4-containerized-app-exercise-rizzballs/machine-learning-client/machine_learning_client.py     129     10    92%
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                                                                                  129     10    92%
+
+======================== 7 passed, 2 warnings in 41.67s ========================
+```
+
+This is our test coverage as of December 4th, 2023 for the web app:
+
+```
+test_app.py ....                                                         [100%]
+
+---------- coverage: platform linux, python 3.11.6-final-0 -----------
+Name                                                                                                             Stmts   Miss  Cover
+------------------------------------------------------------------------------------------------------------------------------------
+/home/runner/work/4-containerized-app-exercise-rizzballs/4-containerized-app-exercise-rizzballs/web-app/app.py      38      8    79%
+------------------------------------------------------------------------------------------------------------------------------------
+TOTAL                                                                                                               38      8    79%
+
+
+============================== 4 passed in 0.43s ===============================
+```
 
 ## Contributors
 
