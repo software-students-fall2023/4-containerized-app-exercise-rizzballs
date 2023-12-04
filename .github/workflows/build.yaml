@@ -29,6 +29,6 @@ jobs:
           script: |
             mkdir test
             cd test
-            git clone git@github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs.git
+            git clone git@github.com:software-students-fall2023/4-containerized-app-exercise-rizzballs.git
             echo 'Deployment successful to digital ocean'
 
