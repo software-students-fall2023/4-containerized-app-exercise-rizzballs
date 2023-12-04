@@ -8,6 +8,7 @@ from app import app
 
 app_client = app.test_client()
 
+
 @pytest.fixture
 def client():
     """
@@ -16,6 +17,7 @@ def client():
     app.config["TESTING"] = True
     with app.test_client() as test_client:
         yield test_client
+
 
 # pylint: disable=W0621
 def test_root_page(client):
@@ -27,22 +29,25 @@ def test_root_page(client):
     print("Response data:", response.data)
     assert b"Recording audio..." in response.data
 
+
 # pylint: disable=W0613
 def test_analyze_data(client, monkeypatch):
     """
     Test the analyze_data route with a mocked response.
     """
+
     # pylint: disable=W0613
     def mock_post(*args, **kwargs):
         class MockResponse:
             """
-    Mock function for simulating a POST request.
+            Mock function for simulating a POST request.
 
-    This function returns a mocked response with a JSON payload.
+            This function returns a mocked response with a JSON payload.
 
-    Returns:
-        MockResponse: An object with a `json` method and a `status_code` property.
-    """
+            Returns:
+                MockResponse: An object with a `json` method and a `status_code` property.
+            """
+
             @staticmethod
             def json():
                 """
@@ -69,6 +74,7 @@ def test_analyze_data(client, monkeypatch):
         assert response.status_code == 200
         assert b"mocked" in response.data
 
+
 # pylint: disable=W0613
 def test_analyze_data_no_audio(client):
     """
@@ -78,16 +84,19 @@ def test_analyze_data_no_audio(client):
     assert response.status_code == 200
     assert b"No audio file provided" in response.data
 
+
 # pylint: disable=W0613
 def test_analyze_data_failed_request(client, monkeypatch):
     """
     Test the analyze_data route with a mocked failed response.
     """
+
     def mock_post(*args, **kwargs):
         class MockResponse:
             """
             mock response class
             """
+
             @staticmethod
             def json():
                 """
@@ -110,6 +119,7 @@ def test_analyze_data_failed_request(client, monkeypatch):
         response = client.post("/analyzeData", data={"audio": (temp_file, "test.wav")})
         assert response.status_code == 500
         assert b"Failed to send and process audio" in response.data
+
 
 if __name__ == "__main__":
     pytest.main(["-v", "test_app.py", "--cov=web-app"])

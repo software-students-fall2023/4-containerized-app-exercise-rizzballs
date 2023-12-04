@@ -14,6 +14,7 @@ client = MongoClient("mongodb://localhost:27017/")
 db = client["ml_database"]
 collection = db["transcription"]
 
+
 @app.route("/test_render_template")
 def test_render_template():
     """
@@ -22,12 +23,14 @@ def test_render_template():
     print("Request received for /test_render_template")
     return render_template("root.html")
 
+
 @app.route("/")
 def root_page():
     """
     Template to render root page
     """
     return render_template("root.html")
+
 
 @app.route("/results")
 def display_results():
@@ -43,6 +46,7 @@ def display_results():
         "results.html", transcription_result=my_transcript, activePage="results.html"
     )
 
+
 @app.route("/analyzeData", methods=["POST"])
 def analyze_data():
     """
@@ -55,7 +59,9 @@ def analyze_data():
         audio_file = request.files["audio"]
         ml_client_url = "http://127.0.0.1:5001/analyzeAudio"
         # Use the converted audio file
-        response = requests.post(ml_client_url, files={"audio": audio_file}, timeout=100)
+        response = requests.post(
+            ml_client_url, files={"audio": audio_file}, timeout=100
+        )
         print("sent over")
 
         # pylint: disable=R1705
@@ -64,12 +70,14 @@ def analyze_data():
             return jsonify(result)
         else:
             return (
-                jsonify({"error": "Failed to send and process audio. Please try again."}),
+                jsonify(
+                    {"error": "Failed to send and process audio. Please try again."}
+                ),
                 500,
-            ) \
-
+            )
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": f"File not found: {str(e)}"})
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
