@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graded Report</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    {% extends 'base.html' %} 
+    {% block Base %}
+        <div class="results-container">
+            <h2>Audio Analysis Results</h2>
+            <p><strong>Transcription:</strong> {{ transcription_result.transcription }}</p>
+            <h2>Grade Report</h2>
+            <ul>
+                <li>{{ transcription_result.grade_report.filler_words }}</li>
+                <li>{{ transcription_result.grade_report.buzz_words }}</li>
+                <li>{{ transcription_result.grade_report.grade_analysis }}</li>
+            </ul>
+        </div>
+    {% endblock %}
+</body>
+</html>

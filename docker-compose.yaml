@@ -1,0 +1,31 @@
+version: "3.11"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+
+  frontend:
+    build: ./web-app # build the Docker image from the Dockerfile in the front-end directory
+    image: kingslayerrq/4-containerized-app-exercise-rizzballs:frontend-v2
+    container_name: webappcontainer
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+
+
+  backend:
+    build: ./machine-learning-client
+    image: kingslayerrq/4-containerized-app-exercise-rizzballs:backend-v2
+    container_name: mlcontainer
+    ports:
+      - "5001:5001"
+    depends_on:
+      - mongodb
+
+  
+volumes:
+  mongodb-data:

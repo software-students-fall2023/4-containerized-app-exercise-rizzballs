@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    {% extends 'base.html' %} 
+    {% block Base %}
+        <p>Our application aims to help you improve your interview skills by helping you practice one of the most common interview questions. To use our application press the start recording button and begin answering the question. When you finish answering press stop recording and wait for a grade response is ready message before navigating to the results page.</p>
+        <h1>Question: tell me about yourself?</h3>
+
+        <div class="buttonContainer">
+            <button  style="background-color:lawngreen; font-size: 26px;  border-radius: 20px; font-family:inherit" type="submit" onclick="beginRecording()"> Start Recording Audio </button>
+        </div>
+
+        <div class="buttonContainer">
+            <button style="background-color:firebrick; font-size: 26px;  border-radius: 20px; font-family:inherit" type="submit" onclick="stopRecording()"> Stop Recording Audio </button>
+        </div>
+
+        <div id="statusMessage">
+            <p id="recordingMessage" class="status-Message" style="display: none;">Recording audio...</p>
+            <p id="processingMessage" class="status-Message" style="display: none;">Processing audio. Please don't go to the results page yet.</p>
+            <p id="completionMessage" class="status-Message" style="display: none;">Analysis has finished. You can go to the results page.</p>
+        </div>
+
+        <script>
+            let mediaRecorder;
+            let audioChunks = [];
+
+            async function beginRecording() {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+                    if (stream instanceof MediaStream) {
+                        mediaRecorder = new MediaRecorder(stream);
+
+                        mediaRecorder.ondataavailable = (event) => {
+                            audioChunks.push(event.data);
+                        };
+
+                        mediaRecorder.onstop = async () => {
+                            const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+                            document.getElementById('recordingMessage').style.display = 'none';
+                            document.getElementById('processingMessage').style.display = 'block';
+
+                            const formData = new FormData();
+                            formData.append('audio', audioBlob);
+
+                            try {
+                                const response = await fetch('/analyzeData', {
+                                    method: 'POST',
+                                    body: formData
+                                });
+
+                                const result = await response.json();
+                                console.log(result);
+                            } catch (error) {
+                                console.error('Error sending data to server:', error);
+                            }
+                            document.getElementById('processingMessage').style.display = 'none';
+                            document.getElementById('completionMessage').style.display = 'block';
+                        }
+                        document.getElementById('recordingMessage').style.display = 'block';
+                        mediaRecorder.start();
+                    } else {
+                        console.error('Failed to obtain a valid MediaStream object.');
+                    }
+                } catch (error) {
+                    console.error('Error getting user media:', error);
+                }
+            }
+
+            function stopRecording() {
+                mediaRecorder.stop();
+            }
+        </script>
+    {% endblock %}
+</body>
+</html>
