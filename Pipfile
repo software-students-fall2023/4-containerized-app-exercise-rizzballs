@@ -22,6 +22,10 @@ requests = "*"
 coverage = "*"
 pytest-flask = "*"
 pytest-cov = "*"
+pytz = "*"
+python-dateutil = "*"
+build = "*"
+gitcommitlogger = "*"
 
 [dev-packages]
 
