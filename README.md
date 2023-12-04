@@ -1,6 +1,8 @@
 # Interview Review WebApp
-![WebApp Machine Learning build test](https://https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/blob/main/.github/workflows/event-logger.yml/badge.svg)
-![WebApp Subsystems build test](https://https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/blob/main/.github/workflows/lint.yml/badge.svg)
+![WebApp Machine Learning build test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/event-logger.yml/badge.svg)
+![WebApp Subsystems build test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/lint.yml/badge.svg)
+![WebApp MLC test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/ml-test.yml/badge.svg)
+![WebApp WebApp test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/actions/workflows/app-test.yml/badge.svg)
 
 ## What is our WebApp?
 
