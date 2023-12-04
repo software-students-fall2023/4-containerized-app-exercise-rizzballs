@@ -1,14 +1,34 @@
 # Interview Review WebApp
-![WebApp Machine Learning build test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/blob/main/.github/workflows/event-logger.yml/badge.svg)
-![WebApp Subsystems build test](https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/blob/main/.github/workflows/lint.yml/badge.svg)
+![WebApp Machine Learning build test](https://https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/blob/main/.github/workflows/event-logger.yml/badge.svg)
+![WebApp Subsystems build test](https://https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs/blob/main/.github/workflows/lint.yml/badge.svg)
 
 ## What is our WebApp?
 
-Our WebApp is designed to help users practice and improve their interview skills. When prompted, users will speak into the microphhone and answer 3 generic interview questions. The app will record the interview and breakdown the answer given, giving a rating based on specified critera and words used. Then, it is compared to other user attempts to give a comparison and return statistics of the prompted user. 
+Our WebApp is designed to help users practice and improve their interview skills. When prompted, users will speak into the microphhone and answer a generic interview question. Utilizing [SpeechRecogntion](https://pypi.org/project/SpeechRecognition/), the app will record the interview and breakdown the answer given, giving a rating based on specified critera and words used. Then, it is compared to other user attempts to give a comparison and return statistics of the prompted user.
 
 ## Installation and Usage
 
-In Progress
+### Method 1: Cloning the Github Repository
+1. Clone the directory through Git Bash with the command:
+
+```
+https://github.com/software-students-fall2023/4-containerized-app-exercise-rizzballs.git
+```
+
+2. Open Docker Desktop
+
+3. In your command prompt, access the directory where you cloned the repository:
+```
+cd "path_to_directory"
+```
+
+4. From here, run the commands:
+```
+docker-compose build
+docker-compose up
+```
+
+5. Now, access the http://127.0.0.1:5000/ in your browser of choice.
 
 ### Install ffmpeg (Windows)
 1. Go to the official ffmpeg website, hover over the windows icon, and click Windows builds from gyan.dev
