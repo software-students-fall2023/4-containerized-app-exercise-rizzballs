@@ -4,7 +4,6 @@ app.py file that helps serve as the front end of our application
 
 import os
 from flask import Flask, render_template, request, jsonify
-import pymongo
 from pymongo import MongoClient
 import requests
 
@@ -55,11 +54,11 @@ def analyze_data():
 
         audio_file = request.files["audio"]
         ml_client_url = "http://127.0.0.1:5001/analyzeAudio"
-        
         # Use the converted audio file
         response = requests.post(ml_client_url, files={"audio": audio_file}, timeout=100)
         print("sent over")
 
+        # pylint: disable=R1705
         if response.status_code == 200:
             result = response.json()
             return jsonify(result)
@@ -67,7 +66,7 @@ def analyze_data():
             return (
                 jsonify({"error": "Failed to send and process audio. Please try again."}),
                 500,
-            )
+            ) \
 
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": f"File not found: {str(e)}"})
