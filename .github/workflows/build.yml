@@ -22,13 +22,8 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       
-      - name: Debug SSH Key
-        run: |
-          echo "${{ secrets.SSH_KEY_RQ }}"
-      - name: Debug SSH Username
-        run: |
-          echo "${{ secrets.SSH_USERNAME_RQ }}"
-          
+
+
       - name: CICD
         uses: appleboy/ssh-action@v0.1.2
         with:
