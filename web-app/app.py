@@ -3,21 +3,29 @@ app.py file that helps serve as the front end of our application
 """
 
 import os
-from flask import Flask, Response, render_template, request, redirect, send_file, jsonify
+from flask import (
+    Flask,
+    Response,
+    render_template,
+    request,
+    redirect,
+    send_file,
+    jsonify,
+)
 import sys
 import pymongo
 from pymongo import MongoClient
 import requests
 
 
-app = Flask(__name__, template_folder='templates')
-
+app = Flask(__name__, template_folder="templates")
 
 
 @app.route("/test_render_template")
 def test_render_template():
     print("Request received for /test_render_template")
     return render_template("root.html")
+
 
 client = MongoClient("mongodb://localhost:27017/")
 db = client["ml_databse"]
@@ -42,8 +50,9 @@ def display_results():
     if not my_transcript:
         return jsonify({"error": "Result not found"}), 404
 
-    return render_template("results.html", transcription_result=my_transcript, activePage="results.html")
-
+    return render_template(
+        "results.html", transcription_result=my_transcript, activePage="results.html"
+    )
 
 
 @app.route("/analyzeData", methods=["POST"])
@@ -75,6 +84,7 @@ def analyze_data():
 
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": f"File not found: {str(e)}"})
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)
