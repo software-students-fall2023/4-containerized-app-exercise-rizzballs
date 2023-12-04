@@ -16,7 +16,7 @@ jobs:
       with:
         host: ${{secrets.SSH_HOST_RQ}}
         key: ${{secrets.SSH_KEY_RQ}}
-        username: ${{secrests.SSH_USERNAME_RQ}}
+        username: ${{secrets.SSH_USERNAME_RQ}}
 
         script: |
           mkdir test
