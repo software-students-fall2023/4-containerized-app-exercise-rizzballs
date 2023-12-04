@@ -59,9 +59,7 @@ def analyze_data():
             result = response.json()
             return jsonify(result)
         return (
-            jsonify(
-                {"error": "Failed to send and process audio. Please try again."}
-            ),
+            jsonify({"error": "Failed to send and process audio. Please try again."}),
             500,
         )
 
