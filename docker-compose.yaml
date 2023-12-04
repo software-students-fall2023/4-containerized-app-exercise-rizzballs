@@ -1,37 +1,31 @@
 version: "3.11"
 
 services:
-  frontend:
-    build: ./web-app # build the Docker image from the Dockerfile in the front-end directory
-    ports:
-      - 5000:5000 # map port 3000 of host machine to port 3000 of container
-    depends_on:
-      - mongodb
-    command: python app.py # command to start up the front-end once the container is up and running
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017/
-      - MONGODB_DATABASE=data
-      - MONGODB_COLLECTION=data-collection
-
   mongodb:
-    image: ./mongodb
-    container_name: mongodb
+    image: mongo:latest
+    container_name: mongo
     ports:
       - "27017:27017"
-    environment:
-      - MONGO_INITDB_ROOT_USERNAME=user
-      - MONGO_INITDB_ROOT_PASSWORD=pass
-    volumes:
-      - mongodb-data:/data/db
+
+  frontend:
+    build: ./web-app # build the Docker image from the Dockerfile in the front-end directory
+    image: webapp
+    container_name: webappcontainer
+    ports:
+      - "5000:5000"
+    depends_on:
+      - backend
+
 
   backend:
     build: ./machine-learning-client
-    depends-on:
+    image: mlclient
+    container_name: mlcontainer
+    ports:
+      - "5001:5001"
+    depends_on:
       - mongodb
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017/
-      - MONGODB_DATABASE=data
-      - MONGODB_COLLECTION=data-collection
+
   
 volumes:
   mongodb-data:

@@ -1,19 +1,19 @@
 FROM python:3.11
-WORKDIR /app
-ADD . /app
 
-RUN apt-get -y update
+WORKDIR /web-app
+
+COPY requirements.txt ./
+
+RUN apt-get update && apt-get install -y ffmpeg
 RUN apt-get -y install libasound-dev
 RUN apt-get -y install portaudio19-dev
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY requirements.txt /app/
+COPY . /web-app
 
-RUN pip install --trusted-host pypi.python.org -r requirements.txt
+EXPOSE 5000
 
-EXPOSE 80
 
-# Define an environment variable... this will be available to programs running inside the container
-ENV NAME World
 # Run app.py when the container launches
 
 COPY . /app

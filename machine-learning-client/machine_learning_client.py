@@ -19,7 +19,7 @@ CORS(app)
 
 ## python3 machine_learning_client.py
 
-client = MongoClient("mongodb://localhost:27017/")
+client = MongoClient("mongodb://mongodb:27017/")
 db = client["ml_databse"]
 collection = db["transcription"]
  
@@ -43,7 +43,6 @@ def add_transcription_mongo(transcription, grade_report):
 
 def audio_to_text(audio_file_string):
     """Function for converting audio file to text transcription"""
-    print("this is not working whhy????")
     r = sr.Recognizer()
     with sr.AudioFile(audio_file_string) as source:
         ad = r.listen(source)
