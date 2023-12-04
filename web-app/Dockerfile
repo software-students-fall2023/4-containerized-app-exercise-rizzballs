@@ -15,4 +15,9 @@ EXPOSE 5000
 
 
 # Run app.py when the container launches
+
+COPY . /app
+
+EXPOSE 5000
+
 CMD ["python", "app.py"]

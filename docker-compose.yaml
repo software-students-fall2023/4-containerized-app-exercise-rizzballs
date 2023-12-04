@@ -27,3 +27,5 @@ services:
       - mongodb
 
   
+volumes:
+  mongodb-data:

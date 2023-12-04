@@ -4,11 +4,8 @@ app.py file that helps serve as the front end of our application
 
 import os
 from flask import Flask, render_template, request, jsonify
-import sys
-import pymongo
 from pymongo import MongoClient
 import requests
-
 
 
 app = Flask("project4")
@@ -37,8 +34,9 @@ def display_results():
     if not my_transcript:
         return jsonify({"error": "Result not found"}), 404
 
-    return render_template("results.html", transcription_result=my_transcript, activePage="results.html")
-
+    return render_template(
+        "results.html", transcription_result=my_transcript, activePage="results.html"
+    )
 
 
 @app.route("/analyzeData", methods=["POST"])
@@ -60,16 +58,16 @@ def analyze_data():
         if response.status_code == 200:
             result = response.json()
             return jsonify(result)
-        else:
-            return (
-                jsonify(
-                    {"error": "Failed to send and process audio. Please try again."}
-                ),
-                500,
-            )
+        return (
+            jsonify(
+                {"error": "Failed to send and process audio. Please try again."}
+            ),
+            500,
+        )
 
     except FileNotFoundError as e:
         return jsonify({"status": "error", "message": f"File not found: {str(e)}"})
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5000")), debug=True)

@@ -22,12 +22,13 @@ CORS(app)
 client = MongoClient("mongodb://mongodb:27017/")
 db = client["ml_databse"]
 collection = db["transcription"]
- 
+
 app.config["UPLOAD_FOLDER"] = "uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 pa = pyaudio.PyAudio()
+
 
 def add_transcription_mongo(transcription, grade_report):
     """
@@ -40,6 +41,7 @@ def add_transcription_mongo(transcription, grade_report):
 
     except Exception as e:
         print(f"Error saving transcription to MongoDB: {e}")
+
 
 def audio_to_text(audio_file_string):
     """Function for converting audio file to text transcription"""
@@ -58,11 +60,12 @@ def audio_to_text(audio_file_string):
     print("success!! we transcribed it")
     return transcription
 
+
 def grade_transcription(transcription_text):
     """
     Function to generate a page giving a break down and grade of an audio transcript someone had just recorded
     """
-   
+
     grade = 0
     filler_words = 0
     buzz_words = 0
@@ -84,7 +87,7 @@ def grade_transcription(transcription_text):
     buzz_words += transcription_text.lower().count("certificate")
     buzz_words += transcription_text.lower().count("qualification")
     buzz_words += transcription_text.lower().count("work")
-    buzz_words += transcription_text.lower().count("interest")  
+    buzz_words += transcription_text.lower().count("interest")
     buzz_words += transcription_text.lower().count("develop")
     buzz_words += transcription_text.lower().count("fulfill")
     buzz_words += transcription_text.lower().count("refine")
@@ -96,13 +99,12 @@ def grade_transcription(transcription_text):
     bz_breakdown = ""
     grade_analysis = ""
 
-    
     if buzz_words == 0:
         bz_breakdown = "You did not use any buzz words. When answering this question, try to talk about your education, work experiences, major, or any jobs you had."
     elif 0 < buzz_words <= 5:
         bz_breakdown = f"You used {buzz_words} buzz words. A decent answer, but you can improve. Try to find more things to say about yourself professionally."
     else:
-        bz_breakdown = f"You used {buzz_words} buzz words. The topics of your answer are acceptable. Make sure to "
+        bz_breakdown = f"You used {buzz_words} buzz words. The topics of your answer are acceptable. Make sure to keep in mind your wording and topics."
 
     if filler_words == 0:
         fw_breakdown = "You did not use any filler words. Or there was a problem with the audio transcript. Either way, remember to talk confidently and at a good pace."
@@ -110,7 +112,7 @@ def grade_transcription(transcription_text):
         fw_breakdown = f"You used {filler_words} filler words. From here, you just need to practice your answer until it comes out naturally. Make sure to keep relaxed."
     else:
         fw_breakdown = f"You used {filler_words} filler words. When giving your answer, try speaking slower and more clearly. Don't confuse yourself by thinking too far ahead."
-    
+
     grade = (buzz_words * 3) - filler_words
     print(grade)
     if grade > 20:
@@ -127,17 +129,18 @@ def grade_transcription(transcription_text):
         grade_analysis = f"Your grade is {grade}/20. You gave a very good response. Everything beyond this is fine tuning your response to the interviewer."
     else:
         grade_analysis = f"Your grade is {grade}/20. This should be your go to answer, but it all depends on the interviewer. This answer should could out naturally and be your basis."
-    
+
     grade_report = {
         "filler_words": fw_breakdown,
         "buzz_words": bz_breakdown,
-        "grade_analysis": grade_analysis
+        "grade_analysis": grade_analysis,
     }
 
     print(fw_breakdown)
     print(bz_breakdown)
     print(grade_analysis)
     return grade_report
+
 
 @app.route("/analyzeAudio", methods=["POST"])
 def analyze_Audios():
@@ -146,12 +149,17 @@ def analyze_Audios():
     """
     try:
         if "audio" not in request.files:
-            return jsonify({"status": "error", "message": "No audio file provided"}), 400
-        
+            return (
+                jsonify({"status": "error", "message": "No audio file provided"}),
+                400,
+            )
+
         audio_file = request.files["audio"]
 
         # Delete existing files if they exist
-        existing_audio_path = os.path.join(app.config["UPLOAD_FOLDER"], "user_audio.wav")
+        existing_audio_path = os.path.join(
+            app.config["UPLOAD_FOLDER"], "user_audio.wav"
+        )
         if os.path.exists(existing_audio_path):
             os.remove(existing_audio_path)
 
@@ -174,20 +182,24 @@ def analyze_Audios():
         print(true_audio_path)
         # Call your functions from ml.py to process the audio
         print("calling audio to text method")
-        transcription = audio_to_text(true_audio_path_str) 
+        transcription = audio_to_text(true_audio_path_str)
         print(transcription)
-        print("calling grade to text method") 
+        print("calling grade to text method")
         gradedTranscription = grade_transcription(transcription)
         add_transcription_mongo(transcription, gradedTranscription)
-        
 
         print("we did it baby")
-        return jsonify({"status": "success", "message": "Audio analysis completed"}), 200
-    
+        return (
+            jsonify({"status": "success", "message": "Audio analysis completed"}),
+            200,
+        )
+
     except Exception as e:
-        return jsonify({"status": "error", "message": f"An error occurred: {str(e)}"}), 500
+        return (
+            jsonify({"status": "error", "message": f"An error occurred: {str(e)}"}),
+            500,
+        )
 
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "5001")), debug=True)
-
