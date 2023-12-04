@@ -1,3 +1,4 @@
+
 import sys
 import os
 import tempfile
@@ -6,8 +7,6 @@ from flask import jsonify
 from flask import Flask
 from flask import render_template
 from app import app, collection
-
-
 
 client = app.test_client()
 
@@ -24,10 +23,7 @@ def test_root_page(client):
     assert b'Recording audio...' in response.data
 
 
-
-
 def test_analyze_data(client, monkeypatch):
-    # Mock the requests.post method
     def mock_post(*args, **kwargs):
         class MockResponse:
             @staticmethod
@@ -42,7 +38,6 @@ def test_analyze_data(client, monkeypatch):
 
     monkeypatch.setattr("requests.post", mock_post)
 
-    # Mock the request.files method
     with tempfile.NamedTemporaryFile(suffix=".wav") as temp_file:
         response = client.post("/analyzeData", data={"audio": (temp_file, "test.wav")})
         assert response.status_code == 200
@@ -55,7 +50,6 @@ def test_analyze_data_no_audio(client):
 
 
 def test_analyze_data_failed_request(client, monkeypatch):
-    # Mock the requests.post method to simulate a failed request
     def mock_post(*args, **kwargs):
         class MockResponse:
             @staticmethod
@@ -70,13 +64,10 @@ def test_analyze_data_failed_request(client, monkeypatch):
 
     monkeypatch.setattr("requests.post", mock_post)
 
-    # Mock the request.files method
     with tempfile.NamedTemporaryFile(suffix=".wav") as temp_file:
         response = client.post("/analyzeData", data={"audio": (temp_file, "test.wav")})
         assert response.status_code == 500
         assert b"Failed to send and process audio" in response.data
-
-# Add more tests as needed
 
 if __name__ == "__main__":
     pytest.main(["-v", "test_app.py", "--cov=web-app"])
